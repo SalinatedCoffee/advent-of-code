@@ -1,0 +1,3 @@
+# ignore files that contain input data
+*.input
+
