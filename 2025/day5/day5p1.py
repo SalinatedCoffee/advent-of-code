@@ -18,12 +18,33 @@ ans = 0
 ranges = []
 ids = []
 
+def add_range(li: list[tuple[int, int]], rng_str: str) -> None:
+    s, e = rng_str.split('-')
+    ranges.append((int(s), int(e)))
+
+def collate_ranges(li: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    li.sort(key = lambda x: x[0])
+    merged = []
+    for s, t in li:
+        if merged and merged[-1][1] >= s:
+            merged[-1][1] = t
+        else:
+            merged.append((s, t))
+
+    return merged
+
+def verify_id(li: list[int], id_str: str) -> None:
+    pass
+
+w_list, w_fun = ranges, add_range
+
 with open(INPUT_FNAME) as lines:
-    tgt = ranges
     for line in lines:
         if line == "":
-            break
-
+            ranges = collate_ranges(ranges)
+            w_list, w_fun = ids, verify_id
+            continue
+        w_fun(w_list, line)
 
 print(f"{ans}.")
 
