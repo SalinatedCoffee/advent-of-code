@@ -26,9 +26,9 @@ def add_range(li: list[list[int, int]], rng_str: str) -> None:
 
 def collate_ranges(li: list[list[int, int]]) -> list[list[int, int]]:
     li.sort(key = lambda x: x[0])
-    merged = []
+    merged = [li[0]]
     for s, t in li:
-        if merged and merged[-1][1] >= s:
+        if s <= merged[-1][1] >= s:
             merged[-1][1] = t
         else:
             merged.append([s, t])
