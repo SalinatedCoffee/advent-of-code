@@ -27,35 +27,36 @@
 # on second thought, traversing the resulting graph would be redundant as we can count the number of timelines during
 #   the graph generation step
 
+# man, I could have just implemented bottom-up dp
+# if we think of the ensuing timelines occurring after a beam runs into a splitter, it's pretty obvious that the resulting subtree is the same regardless of the path that the particle took before to reach it
 
-INPUT_FNAME = "day7.input"
+import bisect
 
+INPUT_FNAME = "test.input"
+m, n = 0, 0
 ans = 0
 
-def graphify(manifold: list[str]) -> list[list[tuple(int, int)]]:
-    pass
+def recurse(y: int, x: int, pos: list[list[int]]) -> int:
+    return -1
 
-def count_timelines(graph: list[list[tuple(int, int)]]) -> int:
-    pass
+def count_timelines(start: int, pos: list[list[int]]) -> int:
+    return -1
 
 with open(INPUT_FNAME) as manifold:
-    beams = set()
+    grid = []
+    splitters = []
     for line in manifold:
-        line = line.rstrip()
-        for i, c in enumerate(line):
-            match c:
-                case 'S':
-                    beams.add(i)
-                case '^':
-                    if i in beams:
-                        ans += 1
-                        beams.remove(i)
-                    if i > 0:
-                        beams.add(i-1)
-                    if i < len(line) - 1:
-                        beams.add(i+1)
-                case _:
-                    pass
+        grid.append(line.rstrip())
+    m, n = len(grid), len(grid[0])
+    for i in range(n):
+        col = []
+        for j in range(m):
+            if grid[j][i] == '^':
+                col.append(j)
+        col.append(m)
+        splitters.append(col)
 
-print(f'The beam was split {ans} times.')
+    ans = count_timelines(grid[0].index('S'), splitters)
+
+    print(f'{ans} alternate timelines.')
 
